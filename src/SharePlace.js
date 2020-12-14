@@ -1,3 +1,5 @@
+import { Modal } from './UI/Modal';
+
 class PlaceFinder {
   constructor() {
     const addressForm = document.querySelector('form');
@@ -12,21 +14,25 @@ class PlaceFinder {
       alert('Location feature is not avalable in your browser - please use a more browser or manually eter an adress')
       return;
     };
+    const modal = new Modal('loading-modal-content', 'Loading Location - please wait')
+    modal.show()
     navigator.geolocation.getCurrentPosition(
       successResult => {
+        modal.hide();
         const coordinates = {
           lat: successResult.coords.latitude + Math.random() * 50,
           lng: successResult.coords.longitude + Math.random() * 50
         };
         console.log(coordinates);
       }, error => {
-      alert('Could not locate you unfortunately. Please enter an adress manually!')
-    })
+        modal.hide();
+        alert('Could not locate you unfortunately. Please enter an adress manually!')
+      })
   }
 
   findAddressHandler() {
 
   }
-} 
+}
 
 const plaseFinder = new PlaceFinder()
