@@ -6,20 +6,25 @@ export class Map {
   }
 
   render(coordinates) {
-    if (!google) {
+    if (!ol) {
       alert('Could not load maps library - please try again later!');
       return;
     }
 
-    const map = new google.maps.Map(document.getElementById('map'), {
-      center: this.coordinates,
-      zoom: 16
-    });
+    document.getElementById('map').innerHTML = ''; // clear the <p> in the <div id="map">
 
-    new google.maps.Marker({
-      position: this.coordinates,
-      map: map
-    })
+    const map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([coordinates.lng, coordinates.lat]),
+        zoom: 16
+      })
+    });
   }
 
 }
